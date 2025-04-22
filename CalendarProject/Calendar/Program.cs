@@ -21,45 +21,50 @@ class Program
         //Load the calendar with a method?
         loadCalendar();
 
-        bool logged_on = true;
-        while (logged_on){
         //show the calendar options to the user and get their choice
-        Console.WriteLine("\nCalendar options: ");
-        Console.WriteLine("1. Add Item");
-        Console.WriteLine("2. Edit Item");
-        Console.WriteLine("3. Delete Item");
-        Console.WriteLine("4. View Calendar");
-        Console.WriteLine("5. Exit Calendar");
-
-        Console.Write("What is your choice? ");
-        string choice = Console.ReadLine();
+        displaychoices();
+        //getUserInput();
         
-        switch(choice){
-            case "1":
-                addItem();
-            break;
-            case "2":
-            break;
-            case "3":
-            break;
-            case "4":
-            break;
-            case "5":
-                logged_on = false;
-                saveCalendar();
-                break;
-            default:
-                Console.Write("That is not a valid entry.");
-                break;
-        }
-    }
+        Console.WriteLine("What is your choice? ");
+        string choice = Console.ReadLine();
+        if(choice == "1"){
+            addItem();
+            }
+        else if(choice == "2"){
+            //editItem();
+            }
+        else if(choice =="3"){
+            deleteItem();
+            }
+        else if(choice == "4"){
+            //showCalendar();
+            }
+        else{
+            Console.WriteLine ("That is not a valid entry");
+            }
+    }    
+
+    
+     //saveCalendar();
+                
     //Method for getting the userID and creating a file calendar for that user
     static void getuserID(){
         Console.WriteLine("Please enter your userID using the first two initials of first and last name + apartment number. ");
         userID = Console.ReadLine();
         filePath = $"calendar_{userID}.txt";
     }
-
+    static void displaychoices(){
+        Console.WriteLine("\nCalendar options: ");
+        Console.WriteLine("1. Add Item");
+        Console.WriteLine("2. Edit Item");
+        Console.WriteLine("3. Delete Item");
+        Console.WriteLine("4. View Calendar");
+        Console.WriteLine("5. Exit Calendar");
+    }
+    /*static string getUserInput(string calchoice){
+        Console.WriteLine("What is your choice? (enter number choice) ");
+        return Console.ReadLine();
+    }*/
     static void loadCalendar(){
         if(File.Exists(filePath)){
             string[] content = File.ReadAllLines(filePath);
@@ -68,10 +73,10 @@ class Program
             }}
         else{
             Console.Write("A calendar doesn't exist for you. Add an item and one will be created for you.");
-        }   
-    }
+            }   
+        }
         
-        static void addItem(){
+    static void addItem(){
         Console.WriteLine("Enter the date in (yyyy/mm/dd) format. ");
         string userDate = Console.ReadLine();
         DateTime datevalue;
@@ -81,45 +86,20 @@ class Program
         Console.WriteLine("Enter the description. ");
         string description = Console.ReadLine();
         calItem.Add(new calendarItem {Date = datevalue , Title = title , Description = description});
-        //order the list here 
+        //order the list here
+        Console.WriteLine("Do you want to add more or save the calendar? ");
+        string command = Console.ReadLine();
+        if (command == "save")
+            saveCalendar();
         }
         
-        static void saveCalendar(){
-            List<string> calitemlines = calItem.Select(item => $"{item.Date.ToShortDateString()}|{item.Title}|{item.Description}").ToList();
-            File.WriteAllLines(filePath, calitemlines);
+    static void saveCalendar(){
+        List<string> calitemlines = calItem.Select(item => $"{item.Date.ToShortDateString()}|{item.Title}|{item.Description}").ToList();
+        File.AppendAllLines(filePath, calitemlines);
         }
-
-        /*Console.Write("Would you like to add, edit, delete or exit from the calendar? ");
-        string action = Console.ReadLine();
-
-        if(action == "add");{
-            Console.Write("Select the month: ");
-            Console.Write("Select the day: ");
-            Console.Write("Enter a title: ");
-            Console.Write("Enter a description: ");
-        }    
-            
-            //saves changes to calendar
-            //ask what the user would like to do
-
-        else if (action == "edit");{
-            Console.Write("Select the month: ");
-            Console.Write("Select the day: ");
-            Console.Write("Select the item: ");
-            Console.Write("Enter new information: ");
+    static void deleteItem(){
+        //Console.WriteLine("Here is a list of your items.");
+        calItem.ForEach(i => Console.WriteLine(i));
+        Console.WriteLine("Enter the number of the item to be deleted. ");
         }
-
-            //save changes to the calendar
-            //ask what the user would like to do
-            
-        else if(action == "delete");{
-            Console.Write("Select the month: ");
-            Console.Write("Select the day: ");
-            Console.Write("Select the item: ");
-        }
-            //save changes to the calendar to remove the item
-            //ask the user what they would like to do
-        Console.Write("Would you like to add, edit, delete or exit from the calendar? ");
-        action = Console.ReadLine();*/
-    }
 }
