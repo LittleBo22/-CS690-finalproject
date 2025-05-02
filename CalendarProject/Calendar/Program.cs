@@ -58,6 +58,32 @@ class Program
             if (int.TryParse(Console.ReadLine(), out int itemNumber) && itemNumber > 0 && itemNumber <= CalendarItems.Count){
                 CalendarItems.RemoveAt(itemNumber - 1);}
             }
-         } while (userInput !="end");
+        else if (userInput == "edit"){
+            Console.WriteLine("Current Calendar Items:");
+            for (int i = 0; i < CalendarItems.Count; i++){
+                Console.WriteLine($"{i+1}. {CalendarItems[i]}");}
+            Console.WriteLine("Enter the number of the item to edit: ");
+            string entryToEdit = Console.ReadLine();
+            if (int.TryParse(entryToEdit, out int entryNumber)){
+                if (entryNumber >= 1; && entryNumber <= CalendarItems.Count){
+                    string originalEntry = CalendarItems[entryNumber];
+                    string [] parts = originalEntry.Split(',');
+                    if (parts.Length == 3){
+                    Console.WriteLine ($"Your original entry is Date: {parts[0]},Title: {parts[1]}, Description: {parts[2]}");
+                    
+                    string newDate = Console.ReadLine();
+                    if(!string.IsNullOrWhiteSpace(newDate)){
+                        parts[0] = newDate;}
+
+                    string newTitle = Console.ReadLine();
+                    if(!string.IsNullOrWhiteSpace(newTitle)){
+                        parts[0] = newTitle;}
+
+                    string newDescription = Console.ReadLine();
+                    if(!string.IsNullOrWhiteSpace(newDescription)){
+                        parts[0] = newDescription;}
+                    }}}
+            }
+        } while (userInput !="end");
     }
 }
